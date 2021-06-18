@@ -18,7 +18,15 @@ const AppProvider = ({children}) => {
       }
 
     const nextQuestionHandler = () => {
-        dispatch({type: 'NEXT_QUESTION'})
+        startQuiz()
+    }
+    const restartQuiz = () => {
+       fetchCountries()
+        // window.location.reload();
+    }
+
+    const optionClicked = (answer, id) => {
+        dispatch({type: 'QUESTION_ANSWERED', payload: {answer, id}})
     }
 
     const randQuestion = () => {
@@ -30,6 +38,10 @@ const AppProvider = ({children}) => {
         const answer = state.countries[randNum].name;
         while(options.length < 3){
             let option = Math.floor(Math.random() * state.countries.length) + 1
+            console.log(option)
+            if(option === undefined){
+                return
+            }
             if(options.indexOf(option) === -1 && options.indexOf(randNum) === -1) options.push(state.countries[option].name)
         }
         options.push(answer)
@@ -51,6 +63,8 @@ const AppProvider = ({children}) => {
             currentQuestion,
             options,
             answer,
+            optionClicked,
+            
         }
     }
 
@@ -71,7 +85,9 @@ const AppProvider = ({children}) => {
             state,
             startQuiz,
             randQuestion,
-            nextQuestionHandler
+            nextQuestionHandler,
+            optionClicked,
+            restartQuiz,
         }}>
             {children}
         </AppContext.Provider>

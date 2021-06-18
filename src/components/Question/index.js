@@ -7,24 +7,23 @@ import { useGlobalContext } from '../../provider/context';
 import { useEffect } from 'react';
 
 const Question = () => {
-    const { state, onNextClick, startQuiz, randQuestion } = useGlobalContext()   
-    useEffect(() => {
-             if(state.questionData){
-                // const { country, quesion_type, currentQuestion, options, answer } = randQuestion()
-                console.log(state.questionData.currentQuestion )
-             }
-    },[state.questionData])
+    const { state, nextQuestionHandler, optionClicked } = useGlobalContext()   
+    // useEffect(() => {
+    //          if(state.questionData){
+    //             // const { country, quesion_type, currentQuestion, options, answer } = randQuestion()
+    //             console.log(state.questionData.currentQuestion )
+    //          }
+    // },[state.questionData])
     if(state.loading){
         return <div>Loading...</div>
     }
     return( state.questionData ?
         
-        <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
+        <Animated animationIn="bounceInRight" animationOut="fadeOut" isVisible={true}>
             <Card>
                 {state.questionData.quesion_type === 'flag' &&
                     <div className="flag">
                         <img src={state.questionData.country.flag} alt="flag" />
-                        {/* {state.questionData.answer} */}
                     </div>
                    
                 }
@@ -34,9 +33,12 @@ const Question = () => {
                         state.questionData.options.map((option, index) => {
                             const optionLabel = ['A', 'B', 'C', 'D']
                             return (
-                                <div className="option" key={index}>
+                                <div className={`
+                                ${state.isAnswered && state.questionData.answer === option ? 'option success' : 'option'}
+                                ${state.isAnswered && state.questionData.answer !==  state.user_answer && index === state.selectedOptionID ? 'danger' : ''}
+                                `} key={index}>
                                     <span className="option-type">{optionLabel[index]}</span>
-                                    <div className="answer">{option}</div>
+                                    <div className="answer" onClick={() => optionClicked(option, index)}>{option}</div>
                                     <span className="result-icon"><IoIosCheckmarkCircleOutline/></span>
                                 </div>
                             )
@@ -59,9 +61,15 @@ const Question = () => {
                         <span className="result-icon">✔</span>
                     </div> */}
                 </div>
-                <button className="btn btn-next" onClick={onNextClick}>Next</button>
+                
+                {
+                    state.isAnswered &&
+                    <button className="btn btn-next" onClick={nextQuestionHandler}>Next</button>
+                }
                 <div className="logo">
-                <img src={logo} alt="" />
+                   <Animated animationIn="fadeIn" animationInDelay={1000}>
+                        <img src={logo} alt="logo" />
+                   </Animated>
                 </div>
             </Card>
         </Animated>

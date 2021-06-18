@@ -10,7 +10,10 @@ function App() {
       <main>
         <section className="quiz-wrapper">
           <h1>Country Quiz</h1>
-            <Question/>
+          {
+            state.counter !== state.answered ?  <Question/> : <Result />
+          }
+           
           {/* <Result /> */}
         </section>
       </main>

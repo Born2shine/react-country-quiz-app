@@ -11,7 +11,10 @@ const store = () => {
         score: 0,
         counter: 0,
         answered: 0,
-        loading: true
+        loading: true,
+        isAnswered: false,
+        selectedOptionID: null,
+        user_answer: null
     }
 }
 

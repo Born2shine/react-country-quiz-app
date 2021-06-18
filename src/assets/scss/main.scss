@@ -60,13 +60,12 @@ main{
             padding: 1rem;
             border-radius: 1rem;
             .flag{
-                // display: none;
                 img{
                     width: 100px;
                 }
             }
             .question{
-                margin-top: 2rem;
+                margin-top: 1.5rem;
                 color: $clr-primary;
                 letter-spacing: $spacing;
             }
@@ -103,10 +102,18 @@ main{
                 .success{
                     border: 2px solid $clr-success;
                     color: $clr-white;
+                    &:hover{
+                        background: $clr-success;
+                        border: 2px solid $clr-success;
+                    }
                 }
                 .danger{
                     border: 2px solid $clr-danger;
                     color: $clr-white;
+                    &:hover{
+                        background: $clr-danger;
+                        border: 2px solid $clr-danger;
+                    }
                 }
                 .warning{
                     border: 2px solid $clr-warning;
