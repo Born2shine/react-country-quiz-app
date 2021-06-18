@@ -10,7 +10,6 @@ const reducer = (state, action) => {
             const optionID = action.payload.id
             const current_answer = state.questionData.answer
             const score = () => (user_answer === current_answer) ? 1 : 0
-
             if(!state.isAnswered)
             return {
                 ...state,
@@ -23,7 +22,6 @@ const reducer = (state, action) => {
             return {...state}
         case 'START_QUIZ':
             const my_score = state.score;
-            console.log(my_score)
             const { country, quesion_type, currentQuestion, options, answer } = action.payload
             const newQues = {
                 quesion_type: quesion_type,

@@ -48,7 +48,7 @@ const Result = () => {
                     <h1 className="title">Results</h1>
                     {
                         state.score === 0 ? (
-                            <p className="message">You got <span className="score">{state.score}</span> correct answers</p>
+                            <p className="message">You score <span className="score">{state.score}</span> 😢</p>
                         ) : (
                             <p className="message">You got <span className="score">{state.score}</span> correct answers</p>
                         )

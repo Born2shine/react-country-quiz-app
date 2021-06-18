@@ -1,11 +1,34 @@
 import React, { useContext, useEffect, useReducer, useState } from "react"
 import reducer from "../reducer/reducer"
 import store from "../store/store"
+import useSound from 'use-sound';
+import boopFailed from '../assets/sounds/failed.mp3';
+import boopCorrect from '../assets/sounds/correct.mp3';
+import boopGaming from '../assets/sounds/game_on.mp3';
+import boopWinner from '../assets/sounds/winner.mp3';
+import boopWrong from '../assets/sounds/wrong.mp3';
 
 const AppContext = React.createContext()
 
-
 const AppProvider = ({children}) => {
+    const start_sound = useSound(boopGaming);
+    const correct_sound = useSound(boopCorrect);
+    const wrong_sound = useSound(boopWrong);
+
+    const start_game_sound = () => {
+        const [play, {stop}] = start_sound
+        return {play, stop}
+    }
+
+    const play_answered_sound = (is_correct) => {
+       if(is_correct){
+        const [play, {stop}] = correct_sound
+        return {play, stop}
+       }
+       const [play, {stop}] = wrong_sound
+       return {play, stop}
+    }
+
     const [state, dispatch] = useReducer(reducer, store)
     const fetchCountries = async () => {
        try {
@@ -16,17 +39,33 @@ const AppProvider = ({children}) => {
            throw new Error()
        }
       }
+      
+    //   useEffect(() => {
+    //     if(!state.isAnswered){
+    //         start_game_sound().play()
+    //     }
+    //   },[state.questionData])
 
     const nextQuestionHandler = () => {
         startQuiz()
     }
     const restartQuiz = () => {
+        start_game_sound().play() 
        fetchCountries()
         // window.location.reload();
     }
 
     const optionClicked = (answer, id) => {
-        dispatch({type: 'QUESTION_ANSWERED', payload: {answer, id}})
+        start_game_sound().stop()
+       if(!state.isAnswered){
+        if(state.questionData.answer === answer){
+            play_answered_sound(true).play()
+        }else{
+            play_answered_sound(false).play()
+        }
+       }
+       dispatch({type: 'QUESTION_ANSWERED', payload: {answer, id}})
+       
     }
 
     const randQuestion = () => {
@@ -38,7 +77,6 @@ const AppProvider = ({children}) => {
         const answer = state.countries[randNum].name;
         while(options.length < 3){
             let option = Math.floor(Math.random() * state.countries.length) + 1
-            console.log(option)
             if(option === undefined){
                 return
             }

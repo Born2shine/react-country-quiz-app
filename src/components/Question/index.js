@@ -39,7 +39,10 @@ const Question = () => {
                                 `} key={index}>
                                     <span className="option-type">{optionLabel[index]}</span>
                                     <div className="answer" onClick={() => optionClicked(option, index)}>{option}</div>
-                                    <span className="result-icon"><IoIosCheckmarkCircleOutline/></span>
+                                    <span className="result-icon">
+                                        {state.isAnswered && state.questionData.answer === option ? <IoIosCheckmarkCircleOutline/> : ''}
+                                        {state.isAnswered && state.questionData.answer !==  state.user_answer && index === state.selectedOptionID ? <MdCancel/> : '' }
+                                    </span>
                                 </div>
                             )
                         })
